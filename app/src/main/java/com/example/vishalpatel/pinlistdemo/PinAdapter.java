@@ -1,0 +1,63 @@
+package com.example.vishalpatel.pinlistdemo;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+
+import com.example.vishalpatel.pinlistdemo.utils.BaseRecyclerAdapter;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+
+public class PinAdapter extends BaseRecyclerAdapter<PinAdapter.PinViewHolder, PinModel> {
+
+    private ArrayList<PinModel> list = new ArrayList<>();
+    Context context;
+
+
+    public PinAdapter(ArrayList<PinModel> list, Context context) {
+        super(list);
+        this.list = list;
+        this.context = context;
+    }
+
+    class PinViewHolder extends BaseRecyclerAdapter.ViewHolder {
+
+
+        @BindView(R.id.tvCaptionName)
+        TextView tvCaptionName;
+        @BindView(R.id.tvCordinates)
+        TextView tvCordinates;
+        @BindView(R.id.itemView)
+        LinearLayout itemView;
+
+        PinViewHolder(View itemView) {
+            super(itemView);
+            clickableViews(itemView);
+
+        }
+    }
+
+    @Override
+    public PinViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new PinViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_caption, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(PinViewHolder holder, int position) {
+
+        PinModel pinModel = list.get(position);
+        holder.tvCaptionName.setText(""+ pinModel.getCaptionName());
+        holder.tvCordinates.setText(""+ pinModel.getX_cordinate_pin() + " " + pinModel.getY_cordinate_pin() );
+    }
+
+    @Override
+    public int getItemCount() {
+        return list == null ? 0 : list.size();
+    }
+}

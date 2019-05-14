@@ -1,37 +1,38 @@
-package com.example.vishalpatel.pinlistdemo;
+package com.example.vishalpatel.pinlistdemo.acitivities;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.appcompat.widget.Toolbar;
-
-import com.example.vishalpatel.pinlistdemo.utils.subscaleviews.ImageSource;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.vishalpatel.pinlistdemo.models.PinModel;
+import com.example.vishalpatel.pinlistdemo.utils.Contasts.Constants;
+import com.example.vishalpatel.pinlistdemo.views.PinView;
+import com.example.vishalpatel.pinlistdemo.R;
+import com.example.vishalpatel.pinlistdemo.views.subscaleviews.ImageSource;
 import com.orhanobut.hawk.Hawk;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FullImagePinActivity extends Activity {
+public class FullImagePinActivity extends AppCompatActivity {
 
 
     @BindView(R.id.pinFullView)
     PinView pinView;
 
-    @BindView(R.id.toolBar)
-    Toolbar toolBar;
 
     @BindView(R.id.etCaption)
     EditText etCaption;
@@ -42,26 +43,26 @@ public class FullImagePinActivity extends Activity {
 
     boolean isPinAdded = false;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_full_image);
+        setContentView(R.layout.activity_add_marker);
         ButterKnife.bind(this);
-
-        pinView.setImage(ImageSource.asset("map_image.jpg"));
-        pinView.setMinimumDpi(50);
-        pinView.setMaxScale(2F);
-        toolBar.setTitle("Plot Map");
-
+        getSupportActionBar().setTitle("Plot Map");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initPinView();
 
         final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (pinView.isReady()) {
+                if (pinView.isReady() && isPinAdded) {
+                    pinView.removePin(addedPoint.x + "_" + addedPoint.y);
                     addedPoint = pinView.viewToSourceCoord(e.getX(), e.getY());
                     isPinAdded = true;
                     setPin(addedPoint);
                 } else {
+                    addedPoint = pinView.viewToSourceCoord(e.getX(), e.getY());
+                    isPinAdded = true;
+                    setPin(addedPoint);
                 }
                 return true;
             }
@@ -85,38 +86,39 @@ public class FullImagePinActivity extends Activity {
         });
     }
 
+    private void initPinView() {
+        pinView.setImage(ImageSource.asset("map_image.jpg"));
+        pinView.setMinimumDpi(50);
+        pinView.setMaxScale(2F);
+    }
+
 
     private void setPin(PointF center) {
         if (pinView.isReady()) {
-            pinView.setPin(center, center.x + "_" + center.y);
+            pinView.setPin(center, center.x + "_" + center.y,false);
         }
     }
 
     @OnClick(R.id.btnSave)
-    void onSaveClick(View view) {
-
+    void onSaveClick() {
 
         if (!etCaption.getText().toString().trim().isEmpty()) {
             if (isPinAdded) {
                 List<PinModel> previousList = new ArrayList<>();
-
-                previousList = Hawk.get("pointList");
-
+                previousList = Hawk.get(Constants.MARKERS_LIST);
 
                 if (previousList != null && previousList.size()>0){
                     if (previousList.contains(addedPoint.x + "_" + addedPoint.y)) {
+                        // If Previous pin is added on same location then we will remove that pin and user will set that pin again.
                         Toast.makeText(this, "This Location is already Added please Try another.", Toast.LENGTH_SHORT).show();
                         pinView.removePin(addedPoint.x + "_" + addedPoint.y);
                     } else {
-
-
                         savePointList(previousList);
                     }
                 }else {
                     previousList = new ArrayList<>();
                     savePointList(previousList);
                 }
-
 
             } else {
                 Toast.makeText(this, "Please add Pin into Map", Toast.LENGTH_SHORT).show();
@@ -129,20 +131,50 @@ public class FullImagePinActivity extends Activity {
     }
 
     private void savePointList(List<PinModel> previousList) {
+
         PinModel pinModel = new PinModel();
         pinModel.setId(addedPoint.x + "_" + addedPoint.y);
         pinModel.setX_cordinate_pin(addedPoint.x);
         pinModel.setY_cordinate_pin(addedPoint.y);
         pinModel.setCaptionName(etCaption.getText().toString().trim());
+        pinModel.setPinImage(Constants.BitMapToString(getBitmapFromView(pinView)));
         previousList.add(pinModel);
-        Hawk.put("pointList", previousList);
+        Hawk.put(Constants.MARKERS_LIST, previousList);
 
         Intent intent = getIntent();
-        intent.putExtra("point_X", String.valueOf(addedPoint.x));
-        intent.putExtra("point_Y",String.valueOf(addedPoint.y));
-        intent.putExtra("captionName", etCaption.getText().toString().trim());
+        intent.putExtra(Constants.POINT_X, String.valueOf(addedPoint.x));
+        intent.putExtra(Constants.POINT_Y,String.valueOf(addedPoint.y));
+        intent.putExtra(Constants.CAPTIONNAME, etCaption.getText().toString().trim());
 
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

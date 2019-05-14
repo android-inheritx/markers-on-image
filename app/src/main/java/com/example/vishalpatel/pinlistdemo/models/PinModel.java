@@ -1,4 +1,6 @@
-package com.example.vishalpatel.pinlistdemo;
+package com.example.vishalpatel.pinlistdemo.models;
+
+import android.graphics.Bitmap;
 
 public class PinModel {
 
@@ -7,7 +9,16 @@ public class PinModel {
     public double x_cordinate_pin;
     public double y_cordinate_pin;
     public String captionName;
+    public String pinImage;
 
+
+    public String getPinImage() {
+        return pinImage;
+    }
+
+    public void setPinImage(String pinImage) {
+        this.pinImage = pinImage;
+    }
 
     public String getId() {
         return id;

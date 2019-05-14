@@ -1,7 +1,9 @@
-package com.example.vishalpatel.pinlistdemo;
+package com.example.vishalpatel.pinlistdemo.acitivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.vishalpatel.pinlistdemo.R;
 
 public class MainActivity extends AppCompatActivity {
 

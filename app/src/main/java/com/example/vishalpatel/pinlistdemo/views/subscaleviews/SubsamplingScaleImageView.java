@@ -1,4 +1,4 @@
-package com.example.vishalpatel.pinlistdemo.utils.subscaleviews;
+package com.example.vishalpatel.pinlistdemo.views.subscaleviews;
 
 import android.content.ContentResolver;
 import android.content.Context;

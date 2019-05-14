@@ -13,7 +13,7 @@
         tools:replace="android:appComponentFactory"
         android:appComponentFactory="whateverString"
         android:theme="@style/AppTheme">
-        <activity android:name=".ImageMapListActivity">
+        <activity android:name=".acitivities.ImageMapListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FullImagePinActivity">
+        <activity android:name=".acitivities.FullImagePinActivity">
         </activity>
 
     </application>

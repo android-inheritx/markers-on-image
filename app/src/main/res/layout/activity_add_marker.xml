@@ -5,12 +5,6 @@
     android:orientation="vertical">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +21,7 @@
 
 
 
-        <com.example.vishalpatel.pinlistdemo.PinView
+        <com.example.vishalpatel.pinlistdemo.views.PinView
             android:id="@+id/pinFullView"
             style="@style/mainPanel"
             android:layout_height="400dp" />

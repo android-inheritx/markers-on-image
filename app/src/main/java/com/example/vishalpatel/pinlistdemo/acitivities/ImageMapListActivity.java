@@ -1,17 +1,11 @@
 package com.example.vishalpatel.pinlistdemo.acitivities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.widget.Button;
-
 import com.example.vishalpatel.pinlistdemo.adapters.PinAdapter;
 import com.example.vishalpatel.pinlistdemo.models.PinModel;
 import com.example.vishalpatel.pinlistdemo.views.PinView;
@@ -20,9 +14,7 @@ import com.example.vishalpatel.pinlistdemo.utils.Contasts.Constants;
 import com.example.vishalpatel.pinlistdemo.views.subscaleviews.ImageSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.orhanobut.hawk.Hawk;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,7 +37,11 @@ public class ImageMapListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_markers_list);
         ButterKnife.bind(this);
-        getSupportActionBar().setTitle("Points");
+        getSupportActionBar().setTitle("Dashboard");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.btn_star);
+
         initPinView();
         setRecycleView();
 

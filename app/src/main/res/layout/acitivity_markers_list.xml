@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context=".acitivities.ImageMapListActivity">
 
@@ -11,18 +11,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <com.example.vishalpatel.pinlistdemo.views.PinView
-            android:id="@+id/pinView"
-            style="@style/mainPanel"
-            android:layout_height="300dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/view_border">
+
+            <com.example.vishalpatel.pinlistdemo.views.PinView
+                android:id="@+id/pinView"
+                style="@style/mainPanel"
+                android:layout_height="250dp"
+                android:layout_width="match_parent"
+                android:padding="2dp" />
+
+        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCaptionList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -35,7 +50,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
         android:src="@drawable/icon_add"
-        android:background="@color/colorPrimary"
+        app:rippleColor="@color/colorPrimaryDark"
+        android:clickable="true"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

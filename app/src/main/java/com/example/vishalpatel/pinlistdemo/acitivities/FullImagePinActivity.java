@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.vishalpatel.pinlistdemo.models.PinModel;
+import com.example.vishalpatel.pinlistdemo.utils.CommonUtils;
 import com.example.vishalpatel.pinlistdemo.utils.Contasts.Constants;
 import com.example.vishalpatel.pinlistdemo.views.PinView;
 import com.example.vishalpatel.pinlistdemo.R;
@@ -47,7 +48,7 @@ public class FullImagePinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_marker);
         ButterKnife.bind(this);
-        getSupportActionBar().setTitle("Plot Map");
+        getSupportActionBar().setTitle("Add Marker");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initPinView();
 
@@ -110,7 +111,9 @@ public class FullImagePinActivity extends AppCompatActivity {
                 if (previousList != null && previousList.size()>0){
                     if (previousList.contains(addedPoint.x + "_" + addedPoint.y)) {
                         // If Previous pin is added on same location then we will remove that pin and user will set that pin again.
-                        Toast.makeText(this, "This Location is already Added please Try another.", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(this, "This Location is already Added please Try another.", Toast.LENGTH_SHORT).show();
+
+                        CommonUtils.AlertBox(this,"","This Location is already Added please Try another.");
                         pinView.removePin(addedPoint.x + "_" + addedPoint.y);
                     } else {
                         savePointList(previousList);
@@ -121,10 +124,13 @@ public class FullImagePinActivity extends AppCompatActivity {
                 }
 
             } else {
-                Toast.makeText(this, "Please add Pin into Map", Toast.LENGTH_SHORT).show();
+
+                CommonUtils.AlertBox(this,"","Please add Pin into Map");
+
+
             }
         } else {
-            Toast.makeText(this, "Please add caption", Toast.LENGTH_SHORT).show();
+            CommonUtils.AlertBox(this,"","Please add caption");
         }
 
 
@@ -137,7 +143,7 @@ public class FullImagePinActivity extends AppCompatActivity {
         pinModel.setX_cordinate_pin(addedPoint.x);
         pinModel.setY_cordinate_pin(addedPoint.y);
         pinModel.setCaptionName(etCaption.getText().toString().trim());
-        pinModel.setPinImage(Constants.BitMapToString(getBitmapFromView(pinView)));
+        pinModel.setPinImage(CommonUtils.BitMapToString(getBitmapFromView(pinView)));
         previousList.add(pinModel);
         Hawk.put(Constants.MARKERS_LIST, previousList);
 

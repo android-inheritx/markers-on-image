@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.vishalpatel.pinlistdemo.models.PinModel;
 import com.example.vishalpatel.pinlistdemo.R;
 import com.example.vishalpatel.pinlistdemo.utils.BaseRecyclerAdapter;
+import com.example.vishalpatel.pinlistdemo.utils.CommonUtils;
 import com.example.vishalpatel.pinlistdemo.utils.Contasts.Constants;
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class PinAdapter extends BaseRecyclerAdapter<PinAdapter.PinViewHolder, Pi
         PinModel pinModel = list.get(position);
         holder.tvCaptionName.setText(pinModel.getCaptionName());
         holder.tvCordinates.setText(pinModel.getX_cordinate_pin() + "\n" + pinModel.getY_cordinate_pin());
-        holder.itemPinView.setImageBitmap(Constants.StringToBitMap(pinModel.getPinImage()));
+        holder.itemPinView.setImageBitmap(CommonUtils.StringToBitMap(pinModel.getPinImage()));
 
     }
 
